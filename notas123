@@ -1,0 +1,82 @@
+https://dzone.com/articles/migrating-springboot-applications-to-latest-java-v
+https://linuxhint.com/install_jdk12_ubuntu_1904/
+
+ export JAVA_HOME="/usr/lib/jvm/java-13-oracles"
+
+
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/obarra/lib/jvm/jdk1.8.0_211/bin:/home/obarra/lib/jvm/jdk1.8.0_211/jre/bin::/snap/bin:/usr/lib/jvm/java-13-oracle/bin:/usr/lib/jvm/java-13-oracle/db/bin:/opt/gradle/gradle-5.6.3/bin
+
+export JAVA_HOME="/usr/lib/jvm/jdk-12.0.2"
+
+
+
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/obarra/lib/jvm/jdk1.8.0_211/bin:/home/obarra/lib/jvm/jdk1.8.0_211/jre/bin::/snap/bin:/usr/lib/jvm/jdk-12.0.2/bin:/opt/gradle/gradle-5.6.3/bin"
+x
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/obarra/lib/jvm/jdk1.8.0_211/bin:/home/obarra/lib/jvm/jdk1.8.0_211/jre/bin:"
+JAVA_HOME="/home/obarra/lib/jvm/jdk1.8.0_211"
+SYSONE_CONFIG="/home/obarra/sysone/config"
+
+
+sudo apt install oracle-java12-installer
+
+sudo apt-get remove oracle-java13-*
+
+$ echo -e 'export JAVA_HOME="/usr/lib/jvm/jdk-12.0.1"\nexport PATH="$PATH:${JAVA_HOME}/bin"'| sudo tee /etc/profile.d/jdk12.sh
+
+
+docker build -t config-server:v1 .
+docker network create springcloudnet
+docker run -p 8888[ext]:8888[int] --name config-server[nombre de container y sirve com host] --network springcloudnet config-server:v1
+
+docker run -p 8888:8888 --name config-server --network springcloudnet config-server:v1
+docker run -p 8761:8761 --name eureka-server --network springcloudnet eureka-server:v1
+docker run -P  --network springcloudnet product-service:v1
+docker run -p 8090:8090 --network springcloudnet zuul-server:v1
+docker run -p 9100:9100 --network springcloudnet oauth2-service:v1
+docker run -P  --network springcloudnet user-service:v1
+docker run -p 8002:8002  -p 8005:8005 -p 8007:8007 --network springcloudnet item-service:v1
+docker run -p 9411:9411 --name zipkin-server --network springcloudnet  -e RABBIT_ADDRESSES=sc-rabbitmq:5672 zipkin-server:v1
+
+deerAAaa6655cx 
+
+
+
+
+
+
+
+
+docker run -p 3306:3306 --name sc-mysql-8 --network springcloudnet -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=products-ob -d mysql:8
+
+docker pull postgres:12-alpine
+docker run -p 5432:5432 --name sc-postgres12 --network springcloudnet -e POSTGRES_PASSWORD=root -e POSTGRES_DB=db_products_ps postgres:12-alpine
+
+spring.datasource.url=jdbc:mysql://localhost:3306/products-ob?serverTimezone=America/Argentina/Buenos_Aires&allowPublicKeyRetrival=true&useSSL=false
+spring.datasource.username=root
+spring.datasource.password=root
+
+docker pull rabbitmq:3.8-management-alpine
+docker run -p 15672:15672  -p 5672:5672 --name 	 --network springcloudnet rabbitmq:3.8-management-alpine
+
+
+
+unauthorized: incorrect username or password
+docker logout
+
+
+docker images -a
+docker rmi id or name tag
+
+containter
+docker ps = docker container ls
+docker ps -a
+docker rm id 
+
+
+logs
+docker logs -f namecontainer or id
+
+
+docker container start [OPTIONS] CONTAINER [CONTAINER...]
+	
